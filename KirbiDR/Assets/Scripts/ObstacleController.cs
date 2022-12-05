@@ -5,21 +5,19 @@ using UnityEngine;
 public class ObstacleController : MonoBehaviour
 {
     public float deleteOffset;
+    public Obstacle obstacle;
 
     private Transform _cameraTransform;
 
-
-    // Start is called before the first frame update
     void Start()
     {
         setCameraTransform();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (transform.position.z < _cameraTransform.position.z - deleteOffset) {
-            Destroy(this.gameObject);
+            ObstacleManager.Instance.removeObstacale(this.gameObject);
         }
 
     }
@@ -27,6 +25,15 @@ public class ObstacleController : MonoBehaviour
     private void setCameraTransform() {
         GameObject camera = GameObject.Find("Main Camera");
         _cameraTransform = camera.transform;
+    }
+
+    public void OnTriggerEnter(Collider other) { 
+    
+        if (other.gameObject.name == "Kirby") {
+            Destroy(gameObject);
+            obstacle.Effect();
+
+        }
     }
 
 }

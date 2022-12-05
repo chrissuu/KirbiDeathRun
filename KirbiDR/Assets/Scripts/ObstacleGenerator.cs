@@ -4,31 +4,32 @@ using UnityEngine;
 
 public class ObstacleGenerator : MonoBehaviour
 {
-    private static ObstacleGenerator _instance;
+    enum WallSpan
+    {
+        SingleTrack,
+        DoubleTrack
+    }
 
-    public GameObject[] obstaclePrefabs;
+    enum Track
+    {
+        Left,
+        Middle,
+        Right,
+    }
+
+    public GameObject obstacleRemover;
     public GameObject wall;
 
     public float minTime;
     public float maxTime;
     
-
     private float _timer = 0;
     private float _waitTime = 0;
 
     public GameObject player;
-    public float playerOffset;
     private Transform _playerTransform;
+    public float distanceFromPlayer;
 
-    private void Awake()
-    {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(this.gameObject);
-        } else {
-            _instance = this;
-        }
-    }
 
     void Start()
     {
@@ -40,11 +41,10 @@ public class ObstacleGenerator : MonoBehaviour
     {
         if (_timer >= _waitTime)
         {
-            generateWall();
+            generateObstacle();
             resetTime();
         }
-        else 
-        {
+        else { 
             _timer += Time.deltaTime;
         }
     }
@@ -56,53 +56,58 @@ public class ObstacleGenerator : MonoBehaviour
     }
 
 
-
-    private void generateWall() {
-        // TEMP
+    private void generateObstacle() {
         int trackWidth = 5;
 
+        GameObject newObstacle;
+        float posX = _playerTransform.position.x;
+        int wallSpan = -1;
 
-        int wallSpan = Random.Range(1, 3);
-        GameObject newWall = Instantiate(wall);
 
-        if (wallSpan == 1)
+        if (Random.Range(0, 5) < 1)
+        {
+            newObstacle = Instantiate(obstacleRemover);
+        }
+        else {
+            newObstacle = Instantiate(wall);
+            wallSpan = Random.Range(0, 2);
+        }
+
+        if (wallSpan == (int) WallSpan.SingleTrack || wallSpan == -1)
         {
             int trackLocation = Random.Range(0, 3);
-            newWall.transform.position = new Vector3(getTrackPosX(trackLocation), 1, _playerTransform.position.z + playerOffset);
+            posX = getTrackPosX(trackLocation);
 
+        } 
+        else if (wallSpan == (int) WallSpan.DoubleTrack) {
+            newObstacle.transform.localScale = new Vector3(trackWidth * 2, wall.transform.localScale.y, wall.transform.localScale.z);
+             posX = generateLongWallX();
         }
-        else if (wallSpan == 2) {
-            int openTrack = Random.Range(1, 3);
 
-            newWall.transform.localScale = new Vector3(trackWidth * 2, wall.transform.localScale.y, wall.transform.localScale.z);
-            //newWall.transform.position = new Vector3(getLongWallX(openTrack) , 1, _playerTransform.position.z + playerOffset);
-        }
+        newObstacle.transform.position = new Vector3(posX, 0, _playerTransform.position.z + distanceFromPlayer);
+
+        ObstacleManager.Instance.addObstacle(newObstacle);
     }
 
-    private float getLongWallX(int openTrack) {
-        // TEMP
+    private float generateLongWallX() {
+        int openTrack = Random.Range(1, 3);
         int trackWidth = 5;
 
-        return getTrackPosX(1) + Mathf.Pow(-1, openTrack) * .05f * trackWidth;
-
-
-
+        return getTrackPosX(1) + Mathf.Pow(-1, openTrack) * .5f * trackWidth;
     }
 
-    // HARD CODED... for now.
-    private float getTrackPosX(int trackLocation)
+    public static float getTrackPosX(int trackLocation)
     {
-        if (trackLocation == 0)
+        if (trackLocation == (int) Track.Left)
         {
             return -5.0f;
-        }
-        else if (trackLocation == 1)
-        {
-            return 0.0f;
-        }
-        else
+        } 
+        else if (trackLocation == (int) Track.Right)
         {
             return 5.0f;
+        } 
+        else {
+            return 0.0f;
         }
     
     }
