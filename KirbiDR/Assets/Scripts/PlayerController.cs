@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 { 
     public float speed = 4.0f;
-
+    public BarrierTrigger rd;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,5 +18,13 @@ public class PlayerController : MonoBehaviour
         float translation = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
         transform.Translate(translation, 0, speed * Time.deltaTime);
 
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Road")
+        {
+            rd.BarrierTriggerEntered();
+        }
     }
 }

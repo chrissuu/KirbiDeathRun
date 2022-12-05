@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RoadDisplacer : MonoBehaviour
 {
-    List<GameObject> roads;
+    public List<GameObject> roads;
     private float roadLength = 200f;
 
     // Start is called before the first frame update

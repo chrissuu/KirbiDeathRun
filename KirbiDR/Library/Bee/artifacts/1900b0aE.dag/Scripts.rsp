@@ -339,6 +339,7 @@
 "Assets/Scripts/ObstacleGenerator.cs"
 "Assets/Scripts/ObstacleManager.cs"
 "Assets/Scripts/PlayerController.cs"
+"Assets/Scripts/ReplayButton.cs"
 "Assets/Scripts/RoadDisplacer.cs"
 "Assets/Scripts/Wall.cs"
 -langversion:9.0
