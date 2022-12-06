@@ -10,14 +10,8 @@ public class Wall : Obstacle
 {
     public override void Effect()
     {
-        EndGame();
-    }
-
-    void EndGame()
-    {
         GameObject.Find("Canvas").transform.GetChild(0).gameObject.SetActive(true);
         Time.timeScale = 0;
     }
-
 
 }

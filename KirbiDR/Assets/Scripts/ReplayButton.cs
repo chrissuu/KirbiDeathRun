@@ -16,9 +16,10 @@ public class ReplayButton : MonoBehaviour
     {
         gameObject.SetActive(false);
         ObstacleManager.Instance.removeAllObstacles();
+        player.transform.position = new Vector3(0.0f, player.transform.position.y, player.transform.position.z);
+        player.GetComponent<PlayerController>().StopAllCoroutines();
         Time.timeScale = 1;
 
-        player.transform.position = new Vector3(0.0f, player.transform.position.y, player.transform.position.z);
         
         
     }
