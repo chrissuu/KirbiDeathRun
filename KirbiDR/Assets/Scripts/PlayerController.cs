@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 { 
     public float speed = 4.0f;
     public BarrierTrigger rd;
-    private float[] arr = { -5.0f, 0.0f, 5.0f };
+    private static float[] arr = { -5.0f, 0.0f, 5.0f };
 
     // Start is called before the first frame update
     void Start()
@@ -83,4 +83,22 @@ public class PlayerController : MonoBehaviour
 
         }
     }
+
+    public static float getKirbiPosX(int kirbiLocation)
+    {
+        if (arr[kirbiLocation] == -5.0f)
+        {
+            return -5.0f;
+        }
+        else if (arr[kirbiLocation] == 5.0f)
+        {
+            return 5.0f;
+        }
+        else
+        {
+            return 0.0f;
+        }
+
+    }
+
 }

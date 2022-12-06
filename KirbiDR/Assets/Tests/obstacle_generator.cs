@@ -25,7 +25,7 @@ public class obstacle_generator
         // ACT
         int track = 2; // RIGHT track
         float retrieved_pos = ObstacleGenerator.getTrackPosX(track);
-
+         
         // ASSERT
         Assert.AreEqual(5.0f, retrieved_pos);
     }
